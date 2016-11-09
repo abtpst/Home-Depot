@@ -2,6 +2,9 @@
 Created on Oct 26, 2016
 
 @author: abhijit.tomar
+
+Some methods to aid in text processing and
+other common tasks
 '''
 import warnings
 warnings.filterwarnings("ignore")
@@ -11,9 +14,11 @@ import random
 import re
 random.seed(2016)
 
-stop_w = ['for', 'xbi', 'and', 'in', 'th', 'on', 'sku', 'with', 'what', 'from', 'that', 'less', 'er', 'ing'] #'electr','paint','pipe','light','kitchen','wood','outdoor','door','bathroom'
+stop_w = ['for', 'xbi', 'and', 'in', 'th', 'on', 'sku', 'with', 'what', 'from', 'that', 'less', 'er', 'ing'] 
 strNum = {'zero': 0, 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9}
-
+'''
+Method for stemming. Basically removing unnecessary characters
+'''
 def str_stem(s): 
     if isinstance(s, str):
         s = re.sub(r"(\w)\.([A-Z])", r"\1 \2", s) #Split words with a.A
@@ -127,32 +132,44 @@ def str_whole_word(str1, str2, i_):
             i_ += len(str1)
     return cnt
     
+'''
+Method for fixing typos in search term
+by referencing Google
+'''
 from spellcheck.Google_Spell_Check import spell_check_dict as typo_dict
-
 def correct_typo(s):
     if s in typo_dict:
         return typo_dict[s]
     else:
         return s
-
+'''
+Method for finding root mean squared error
+'''
 from sklearn.metrics import mean_squared_error
 def custom_mean_squared_error(ground_truth, predictions):
     
     return mean_squared_error(ground_truth, predictions) ** 0.5
-
+'''
+Method for splitting the combined data back into training and test sets.
+This is done after all of the features/attributes have been generated for 
+the combined (training + test) data set
+'''
 import pandas as pd
 def generate_train_test_splits(path_to_df):
-    
+    # Load training data
+    df_train = pd.read_csv('../../resources/data/train/train.csv', encoding="ISO-8859-1")
+    # Marker to later split the combined df
+    num_train = df_train.shape[0]
     df_all = pd.read_csv(path_to_df, encoding='ISO-8859-1', index_col=0)
-    num_train=74067
-    
+    # Slice based on marker
     df_train = df_all.iloc[:num_train]
     df_test = df_all.iloc[num_train:]
-    
+    # Id column for test data
     id_test = df_test['id']
+    # Prediction values from training data
     y_train = df_train['relevance'].values
+    # The following columns are not needed as we have generated all of the features
     cols_to_drop = ['id', 'product_uid', 'relevance', 'search_term', 'product_title', 'product_description', 'brand', 'attr', 'product_info']
-    
     for col in cols_to_drop:
         try:
             df_train.drop(col, axis=1, inplace=True)
@@ -160,6 +177,7 @@ def generate_train_test_splits(path_to_df):
         except:
             continue
     
+    # New names for df_train and df_test
     X_train = df_train[:]
     X_test = df_test[:]
     

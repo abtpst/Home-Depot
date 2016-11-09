@@ -18,7 +18,10 @@ HTML_Codes = (
         ('<', '&lt;'),
         ('&', '&amp;'),
 )
-
+'''
+Check the spelling for string s
+by referencing Google's auto correct
+'''
 def spell_check(s):
     q = '+'.join(s.split())
     time.sleep(  randint(0,2) ) #relax and don't let google be angry
@@ -38,6 +41,7 @@ def spell_check(s):
         search = s
     return search ;
 
+# The results from Google's spell check are stored as a dictionary
 spell_check_dict={
 'steele stake': 'steel stake',
 'gas mowe': 'gas mower',

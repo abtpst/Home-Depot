@@ -2,12 +2,23 @@
 Created on Oct 26, 2016
 
 @author: abhijit.tomar
+
+Helper methods for slicing data frames
 '''
 import pandas as pd
 import numpy as np
+'''
+Return portion of df where string s occurs in df[col]
+'''
 def filter_str(df, s, col='search_term'):
     return df[df[col].str.lower().str.contains(s)]
-
+'''
+input_df is the attributes data frame. Return the portion of input_df 
+where a row contains 'sub_string' in the 'name' column. 'col_names' is the 
+list of column names for the final data frame we return. If 'collecting_counts',
+then value for each unique product is the number of times we saw 'sub_string' in the 
+'name' column for that product. Else, just join the values of the rows
+'''
 def generate_sub_attr_df(input_df, sub_string, col_names, collecting_counts=False):
     values_of_sub_attr = dict()
     input_df['is_sub_attr'] = input_df['name'].str.lower().str.contains(sub_string).fillna(False)
@@ -28,7 +39,12 @@ def generate_sub_attr_df(input_df, sub_string, col_names, collecting_counts=Fals
     result_df.columns = col_names
     
     return result_df
-
+'''
+input_df is the attributes data frame. Return the portion of input_df 
+where a row contains 'sub_string' in the 'name' column and 'qualifier_str'
+occurs in the value. 'col_names' is the list of column names for the 
+final data frame we return.
+'''
 def generate_custom_sub_attr_df(input_df, sub_string, col_names, qualifier_str):
     values_of_sub_attr = dict()
     input_df['is_sub_attr'] = input_df['name'].str.lower().str.contains(sub_string)
@@ -61,9 +77,11 @@ def generate_dual_sub_attr_df(input_df, dual_attr_str, col_names, dual_identifie
     
     return result_df
 
+'''
+For input_df, replace N/A values 
+in 'cols_and_defaults' list
+'''
 def replace_na(input_df, cols_and_defaults):
     
     for col_name,default_vlaue in cols_and_defaults:
-        input_df[col_name].fillna(default_vlaue, inplace=True)
-    
-    
+        input_df[col_name].fillna(default_vlaue, inplace=True)    
