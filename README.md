@@ -9,13 +9,12 @@ Since we are predicting relevance scores instead of classes, we will be using `R
 
 ### Main Idea
 
-1. Use the following regressors
+1. Use the following regressors, with the aim of minimizing the `Root Mean Square Error`
 
       - `RandomForestRegressor`
       - `GradientBoostingRegressor`
       - `ExtraTreesRegressor`
 
-With the aim of minimizing the `Root Mean Square Error`
 2. The hard part in this challenge will be to determine the features for any regressor we use. We will use some tried and tested metrics and text processing tricks to figure out `relevant` features.
 
 3. As always, we will use our old friend `GridSearchCV` for getting the optimal values of parameters for initializing the above regressors.
