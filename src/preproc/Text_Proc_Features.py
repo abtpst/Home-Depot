@@ -92,21 +92,30 @@ def generate_text_proc_features():
     print ('Tokenizing and finding length of fields')
     tok_and_len_func(df_all, ['search_term','product_title','product_description','brand','bullet'])
     #df_all.to_pickle('../../resources/data/dframes/tok_combined_df.pickle')
-    
+    # Combine search term, product title and product description into product info field
     df_all['product_info'] = df_all['search_term']+"\t"+df_all['product_title'] +"\t"+df_all['product_description']
-    df_all['query_in_title'] = df_all['product_info'].map(lambda x:Helper_Tools.str_whole_word(x.split('\t')[0],x.split('\t')[1],0))
-    df_all['query_in_description'] = df_all['product_info'].map(lambda x:Helper_Tools.str_whole_word(x.split('\t')[0],x.split('\t')[2],0))
-    
-    df_all['query_last_word_in_title'] = df_all['product_info'].map(lambda x:Helper_Tools.str_common_word(x.split('\t')[0].split(" ")[-1],x.split('\t')[1]))
-    df_all['query_last_word_in_description'] = df_all['product_info'].map(lambda x:Helper_Tools.str_common_word(x.split('\t')[0].split(" ")[-1],x.split('\t')[2]))
-    
-    df_all['word_in_title'] = df_all['product_info'].map(lambda x:Helper_Tools.str_common_word(x.split('\t')[0],x.split('\t')[1]))
-    df_all['word_in_description'] = df_all['product_info'].map(lambda x:Helper_Tools.str_common_word(x.split('\t')[0],x.split('\t')[2]))
-    df_all['ratio_title'] = df_all['word_in_title']/df_all['len_of_query']
-    df_all['ratio_description'] = df_all['word_in_description']/df_all['len_of_search_term']
+    # Count how many times the search_term appears in product_title
+    df_all['search_in_title'] = df_all['product_info'].map(lambda x:Helper_Tools.count_word_in_sent(x.split('\t')[0],x.split('\t')[1],0))
+    # Count how many times the search_term appears in product_description
+    df_all['search_in_description'] = df_all['product_info'].map(lambda x:Helper_Tools.count_word_in_sent(x.split('\t')[0],x.split('\t')[2],0))
+    # Determine if the last word of the search_term appears in product_title
+    df_all['search_last_word_in_title'] = df_all['product_info'].map(lambda x:Helper_Tools.count_common_word(x.split('\t')[0].split(" ")[-1],x.split('\t')[1]))
+    # Determine if the last word of the search_term appears in product_description
+    df_all['search_last_word_in_description'] = df_all['product_info'].map(lambda x:Helper_Tools.count_common_word(x.split('\t')[0].split(" ")[-1],x.split('\t')[2]))
+    # Count the number of common words between search_title and product_title
+    df_all['common_search_and_title'] = df_all['product_info'].map(lambda x:Helper_Tools.count_common_word(x.split('\t')[0],x.split('\t')[1]))
+    # Count the number of common words between search_title and product_description
+    df_all['common_search_and_description'] = df_all['product_info'].map(lambda x:Helper_Tools.count_common_word(x.split('\t')[0],x.split('\t')[2]))
+    # Ratio of common_search_and_title over total words in search_term
+    df_all['ratio_title'] = df_all['common_search_and_title']/df_all['len_of_search_term']
+    # Ratio of common_search_and_description over number of words in search_term
+    df_all['ratio_description'] = df_all['common_search_and_description']/df_all['len_of_search_term']
+    # Combine search_term and brand as attr
     df_all['attr'] = df_all['search_term']+"\t"+df_all['brand']
-    df_all['word_in_brand'] = df_all['attr'].map(lambda x:Helper_Tools.str_common_word(x.split('\t')[0],x.split('\t')[1]))
-    df_all['ratio_brand'] = df_all['word_in_brand']/df_all['len_of_brand']
+    # Count the number of common words between search_term and brand
+    df_all['common_search_and_brand'] = df_all['attr'].map(lambda x:Helper_Tools.count_common_word(x.split('\t')[0],x.split('\t')[1]))
+    # Ratio of common_search_and_brand over number of words in brand
+    df_all['ratio_brand'] = df_all['common_search_and_brand']/df_all['len_of_brand']
     
     '''
     For each of the fields product_title','product_description','brand','bullet',

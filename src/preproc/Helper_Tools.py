@@ -113,23 +113,31 @@ def segmentit(s, txt_arr, t):
         if not i==len(st):
             r.append(st[i:])
     return r
-
-def str_common_word(str1, str2):
-    words, cnt = str1.split(), 0
+'''
+Method for finding the number of common words.
+if word_or_sent is a sentence (has spaces), then we return the number 
+of common words between word_or_sent and sent.
+Else, return 1 if word_or_sent appears in sent
+'''
+def count_common_word(word_or_sent, sent):
+    words, cnt = word_or_sent.split(), 0
     for word in words:
-        if str2.find(word)>=0:
+        if sent.find(word)>=0:
             cnt+=1
     return cnt
-
-def str_whole_word(str1, str2, i_):
+'''
+Method for counting the number of times word appears in sent,
+beginning at starting_index
+'''
+def count_word_in_sent(word, sent, starting_index):
     cnt = 0
-    while i_ < len(str2):
-        i_ = str2.find(str1, i_)
-        if i_ == -1:
+    while starting_index < len(sent):
+        starting_index = sent.find(word, starting_index)
+        if starting_index == -1:
             return cnt
         else:
             cnt += 1
-            i_ += len(str1)
+            starting_index += len(word)
     return cnt
     
 '''

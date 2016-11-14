@@ -7,7 +7,7 @@ import warnings
 warnings.filterwarnings('ignore')
 import time
 import pandas as pd
-from sklearn.ensemble import RandomForestRegressor,BaggingRegressor
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import make_scorer
 from sklearn import grid_search
 import random
