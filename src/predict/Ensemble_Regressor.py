@@ -39,25 +39,24 @@ def fit_predict_ensemble():
     # Initialize VotingClassifier as a combination of RandomForestRegressor, ExtraTreesRegressor and GradientBoostingRegressor
     ensemble_clf = VotingClassifier(estimators=[('rf',rf_rgr),('et',et_rgr),('gb',gb_rgr)])
     # Set up possible values for hyper-parameters. These would be used by GridSearch to derive optimal set of hyper-parameters
-    tuned_parameters = [{'weights':[[1,1,2],[1,2,1],[2,1,1],[1,1,1]]}]
+    tuned_parameters = [{'weights':[[1,1,2]]}]
     # Generate optimal model using GridSearchCV
     model = grid_search.GridSearchCV(estimator=ensemble_clf, param_grid=tuned_parameters, n_jobs=1, cv=10, verbose=20, scoring=RMSE)
     # Fit the training data on the optimal model
     print ('Fitting')
     model.fit(X_train, y_train)
-    
+
     # Show the best parameters and save
     print('--- Grid Search Completed: %s minutes ---' % round(((time.time() - start_time) / 60), 2))
     print('Best Params:')
     print(model.best_params_)
-    with open('../../resources/data/params/rfr_params.json', 'w') as outfile:
+    with open('../../resources/data/params/ensemble_params.json', 'w') as outfile:
         json.dump(model.best_params_, outfile)
     print('Best CV Score:')
     print(model.best_score_)
     print ('Predicting')
     
-    # Predict using the optimal model
-    y_pred = model.predict(X_test)
+    y_pred=model.predict(X_test)
     for i in range(len(y_pred)):
         if y_pred[i] < 1.0:
             y_pred[i] = 1.0

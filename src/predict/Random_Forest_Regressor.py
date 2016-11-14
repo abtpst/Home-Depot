@@ -25,10 +25,11 @@ def fit_predict_rfr():
 
     print('--- Features Set: %s minutes ---' % round(((time.time() - start_time) / 60), 2))
     print('Number of Features: ', len(X_train.columns.tolist()))
+    
     # Initialize RandomForestRegressor
     rfr = RandomForestRegressor(n_jobs=1, random_state=2016, verbose=1)
     # Set up possible values for hyper-parameters. These would be used by GridSearch to derive optimal set of hyper-parameters
-    param_grid = {'n_estimators': [500], 'max_features': [10, 12, 14]}
+    param_grid = {'n_estimators': [500], 'max_features': [10, 12, 14, 20, 30, 50, 100]}
     # Generate optimal model using GridSearchCV
     model = grid_search.GridSearchCV(estimator=rfr, param_grid=param_grid, n_jobs=1, cv=10, verbose=20, scoring=RMSE)
     # Fit the training data on the optimal model
@@ -39,13 +40,14 @@ def fit_predict_rfr():
     print('--- Grid Search Completed: %s minutes ---' % round(((time.time() - start_time) / 60), 2))
     print('Best Params:')
     print(model.best_params_)
-    with open('../../resources/data/params/rfr_params.json', 'w') as outfile:
+    with open('../../resources/data/params/'+type(rfr).__name__+'_params.json', 'w') as outfile:
         json.dump(model.best_params_, outfile)
     print('Best CV Score:')
     print(model.best_score_)
     print ('Predicting')
     # Predict using the optimal model
     y_pred = model.predict(X_test)
+    
     for i in range(len(y_pred)):
         if y_pred[i] < 1.0:
             y_pred[i] = 1.0
@@ -53,5 +55,5 @@ def fit_predict_rfr():
             y_pred[i] = 3.0
     
     # Save the submission
-    pd.DataFrame({'id': id_test, 'relevance': y_pred}).to_csv('../../resources/results/submission_rfr.csv', index=False)
+    pd.DataFrame({'id': id_test, 'relevance': y_pred}).to_csv('../../resources/results/'+type(rfr).__name__+'submission.csv', index=False)
     print('--- Submission Generated: %s minutes ---' % round(((time.time() - start_time) / 60), 2))

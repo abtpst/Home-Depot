@@ -30,7 +30,7 @@ def fit_predict_gbr():
     # Set up possible values for hyper-parameters. These would be used by GridSearch to derive optimal set of hyper-parameters
     param_grid = {
         'n_estimators': [500],
-        'max_features': [10,20],
+        'max_features': [10,20,50,100],
         'subsample': [0.8]
     }
     # Generate optimal model using GridSearchCV
@@ -43,7 +43,7 @@ def fit_predict_gbr():
     print('--- Grid Search Completed: %s minutes ---' % round(((time.time() - start_time) / 60), 2))
     print('Best Params:')
     print(model.best_params_)
-    json.dump(model.best_params_,open('../../resources/data/params/gbr_params.json','w'))
+    json.dump(model.best_params_,open('../../resources/data/params/'+type(gbr).__name__+'_params.json','w'))
     print('Best CV Score:')
     print(model.best_score_)
     # Predict using the optimal model
@@ -55,5 +55,5 @@ def fit_predict_gbr():
             y_pred[i] = 3.0
     
     # Save the submission
-    pd.DataFrame({'id': id_test, 'relevance': y_pred}).to_csv('../../resources/results/submission_gbr.csv', index=False)
+    pd.DataFrame({'id': id_test, 'relevance': y_pred}).to_csv('../../resources/results/'+type(gbr).__name__+'submission.csv', index=False)
     print('--- Submission Generated: %s minutes ---' % round(((time.time() - start_time) / 60), 2))

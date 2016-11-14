@@ -29,7 +29,7 @@ def jaccardize(input_df, primary_col, col ):
 
 def generate_similarity_features():
     # Load distance metric features
-    df_all = pd.read_pickle('../../resources/data/dframes/distance_metric_features_df.pickle')
+    df_all = pd.read_pickle('../../resources/data/dframes/f_features_df.pickle')
     print ('Loaded combined df')
     
     col_list = ['product_title','product_description','brand','bullet']
@@ -53,6 +53,7 @@ def generate_similarity_features():
         print ('Edit distanced ',col)
     # We will drop the following columns as they have text values and are not suitable for classification
     cols_to_drop = [
+    'attr',
     'search_term',
     'product_title',
     'product_description',

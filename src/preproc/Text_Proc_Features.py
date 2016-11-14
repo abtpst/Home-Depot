@@ -9,6 +9,7 @@ attribute features
 import pandas as pd
 import Helper_Tools 
 import numpy as np
+import time
 import Slicing_Aides as slicer
 
 '''
@@ -79,6 +80,7 @@ def flag_if_attr_has_prop(input_df, prop_df, prop):
     input_df['flag_attr_has_'+prop] = input_df['product_uid'].map(lambda x: prop_encoder.get(x,0)).astype(np.float)  
            
 def generate_text_proc_features():
+    
     # Load attribute features
     df_all = pd.read_pickle('../../resources/data/dframes/attribute_features_df.pickle')
     print ('Loaded combined df')
@@ -90,6 +92,22 @@ def generate_text_proc_features():
     print ('Tokenizing and finding length of fields')
     tok_and_len_func(df_all, ['search_term','product_title','product_description','brand','bullet'])
     #df_all.to_pickle('../../resources/data/dframes/tok_combined_df.pickle')
+    
+    df_all['product_info'] = df_all['search_term']+"\t"+df_all['product_title'] +"\t"+df_all['product_description']
+    df_all['query_in_title'] = df_all['product_info'].map(lambda x:Helper_Tools.str_whole_word(x.split('\t')[0],x.split('\t')[1],0))
+    df_all['query_in_description'] = df_all['product_info'].map(lambda x:Helper_Tools.str_whole_word(x.split('\t')[0],x.split('\t')[2],0))
+    
+    df_all['query_last_word_in_title'] = df_all['product_info'].map(lambda x:Helper_Tools.str_common_word(x.split('\t')[0].split(" ")[-1],x.split('\t')[1]))
+    df_all['query_last_word_in_description'] = df_all['product_info'].map(lambda x:Helper_Tools.str_common_word(x.split('\t')[0].split(" ")[-1],x.split('\t')[2]))
+    
+    df_all['word_in_title'] = df_all['product_info'].map(lambda x:Helper_Tools.str_common_word(x.split('\t')[0],x.split('\t')[1]))
+    df_all['word_in_description'] = df_all['product_info'].map(lambda x:Helper_Tools.str_common_word(x.split('\t')[0],x.split('\t')[2]))
+    df_all['ratio_title'] = df_all['word_in_title']/df_all['len_of_query']
+    df_all['ratio_description'] = df_all['word_in_description']/df_all['len_of_search_term']
+    df_all['attr'] = df_all['search_term']+"\t"+df_all['brand']
+    df_all['word_in_brand'] = df_all['attr'].map(lambda x:Helper_Tools.str_common_word(x.split('\t')[0],x.split('\t')[1]))
+    df_all['ratio_brand'] = df_all['word_in_brand']/df_all['len_of_brand']
+    
     '''
     For each of the fields product_title','product_description','brand','bullet',
     

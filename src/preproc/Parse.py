@@ -23,7 +23,7 @@ def str_common_word(str1, str2):
     x=sum(int(str2.find(word)>=0) for word in str1.split())
     print (x)
     return x
-    
+
 def cleanup():
     
     df_train = pd.read_csv('../../resources/data/train/train.csv', encoding="ISO-8859-1")
