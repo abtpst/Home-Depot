@@ -32,7 +32,7 @@ def fill_tsvd(input_df,col,vect, vtype,tsvd):
         
 def generate_distance_metric_features():
     # Load text processed features
-    df_all = pd.read_pickle('../../resources/data/dframes/text_proc_features_df.pickle')
+    df_all = pd.read_csv('../../resources/data/dframes/text_proc_features_df.csv')
     print ('Loaded combined df')
     # Initialize CountVectorizer
     cv = CountVectorizer(stop_words='english', max_features=1000)
@@ -48,7 +48,7 @@ def generate_distance_metric_features():
     cv_of_search_term = cv.transform(df_all['search_term'])
     # Transform search terms to document-term matrix with tf idf scores as values
     tiv_of_search_term = tiv.transform(df_all['search_term'])
-    # Initilaize columns for calculating cosine similarity
+    # Initialize columns for calculating cosine similarity
     cos_sim_cols = ['product_title','product_description','bullet']
     # For each column
     for col in cos_sim_cols:
@@ -68,4 +68,4 @@ def generate_distance_metric_features():
         fill_tsvd(df_all,col,tiv,'tfidf',tsvd)
         print('tsvd tfidf for ',col)
     # Save distance metric features. Note that these have been added on top of the text proc features
-    df_all.to_pickle('../../resources/data/dframes/distance_metric_features_df.pickle')
+    df_all.to_csv('../../resources/data/dframes/distance_metric_features_df.csv')

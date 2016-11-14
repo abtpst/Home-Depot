@@ -29,7 +29,7 @@ def jaccardize(input_df, primary_col, col ):
 
 def generate_similarity_features():
     # Load distance metric features
-    df_all = pd.read_pickle('../../resources/data/dframes/f_features_df.pickle')
+    df_all = pd.read_csv('../../resources/data/dframes/f_features_df.csv')
     print ('Loaded combined df')
     
     col_list = ['product_title','product_description','brand','bullet']

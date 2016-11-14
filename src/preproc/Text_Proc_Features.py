@@ -82,16 +82,16 @@ def flag_if_attr_has_prop(input_df, prop_df, prop):
 def generate_text_proc_features():
     
     # Load attribute features
-    df_all = pd.read_pickle('../../resources/data/dframes/attribute_features_df.pickle')
+    df_all = pd.read_csv('../../resources/data/dframes/attribute_features_df.csv')
     print ('Loaded combined df')
     # Stem text in the certain columns and add it those as featuers
     print ('Stemming')
     stem_func(df_all, ['search_term','product_title','product_description','brand','bullet','color','material'])
-    #df_all.to_pickle('../../resources/data/dframes/stemmed_combined_df.pickle')
+    df_all.to_csv('../../resources/data/dframes/stemmed_combined_df.csv')
     # Tokenize and get length of certain fields and add those as features
     print ('Tokenizing and finding length of fields')
     tok_and_len_func(df_all, ['search_term','product_title','product_description','brand','bullet'])
-    #df_all.to_pickle('../../resources/data/dframes/tok_combined_df.pickle')
+    df_all.to_csv('../../resources/data/dframes/tok_combined_df.csv')
     # Combine search term, product title and product description into product info field
     df_all['product_info'] = df_all['search_term']+"\t"+df_all['product_title'] +"\t"+df_all['product_description']
     # Count how many times the search_term appears in product_title
@@ -102,6 +102,10 @@ def generate_text_proc_features():
     df_all['search_last_word_in_title'] = df_all['product_info'].map(lambda x:Helper_Tools.count_common_word(x.split('\t')[0].split(" ")[-1],x.split('\t')[1]))
     # Determine if the last word of the search_term appears in product_description
     df_all['search_last_word_in_description'] = df_all['product_info'].map(lambda x:Helper_Tools.count_common_word(x.split('\t')[0].split(" ")[-1],x.split('\t')[2]))
+    # Determine if the first word of the search_term appears in product_title
+    df_all['search_first_word_in_title'] = df_all['product_info'].map(lambda x:Helper_Tools.count_common_word(x.split('\t')[0].split(" ")[0],x.split('\t')[1]))
+    # Determine if the first word of the search_term appears in product_description
+    df_all['search_first_word_in_description'] = df_all['product_info'].map(lambda x:Helper_Tools.count_common_word(x.split('\t')[0].split(" ")[0],x.split('\t')[2]))
     # Count the number of common words between search_title and product_title
     df_all['common_search_and_title'] = df_all['product_info'].map(lambda x:Helper_Tools.count_common_word(x.split('\t')[0],x.split('\t')[1]))
     # Count the number of common words between search_title and product_description
@@ -126,7 +130,7 @@ def generate_text_proc_features():
     '''
     print ('Flagging, counting and ratios')
     flag_count_and_ratio_func(df_all, 'search_term', ['product_title','product_description','brand','bullet']) 
-    #df_all.to_pickle('../../resources/data/dframes/flagged_combined_df.pickle')
+    df_all.to_csv('../../resources/data/dframes/flagged_combined_df.csv')
     ''' 
     For each of the fields product_title','product_description','brand','bullet',
     
@@ -134,7 +138,7 @@ def generate_text_proc_features():
     '''
     print ('Finding ith words')
     calculate_ith_word(df_all, 'search_term', ['product_title','product_description','bullet'],10)
-    #df_all.to_pickle('../../resources/data/dframes/ith_combined_df.pickle')
+    df_all.to_csv('../../resources/data/dframes/ith_combined_df.csv')
     # Convert brand names to numeric values
     print ('Encoding brands')
     brands = pd.unique(df_all.brand.ravel())
@@ -165,4 +169,4 @@ def generate_text_proc_features():
         attr_encoder[pid] = 1
     df_all['flag_has_attr'] = df_all['product_uid'].map(lambda x: attr_encoder.get(x, 0)).astype(np.float)
     # Save text proc features. Note that these have been added on top of the attribute features
-    df_all.to_pickle('../../resources/data/dframes/text_proc_features_df.pickle')
+    df_all.to_csv('../../resources/data/dframes/text_proc_features_df.csv')

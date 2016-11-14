@@ -86,4 +86,4 @@ def generate_attribute_features():
                                ('flag_commercial',-1),('flag_residential',-1),('flag_indoor',-1),('flag_outdoor',-1),
                                ('flag_estar',-1)])
     # Save the progress thus far
-    df_all.to_pickle('../../resources/data/dframes/attribute_features_df.pickle')
+    df_all.to_csv('../../resources/data/dframes/attribute_features_df.csv')
