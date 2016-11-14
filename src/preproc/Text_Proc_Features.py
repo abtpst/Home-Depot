@@ -9,7 +9,6 @@ attribute features
 import pandas as pd
 import Helper_Tools 
 import numpy as np
-import time
 import Slicing_Aides as slicer
 
 '''
@@ -111,15 +110,15 @@ def generate_text_proc_features():
     # Count the number of common words between search_title and product_description
     df_all['common_search_and_description'] = df_all['product_info'].map(lambda x:Helper_Tools.count_common_word(x.split('\t')[0],x.split('\t')[2]))
     # Ratio of common_search_and_title over total words in search_term
-    df_all['ratio_title'] = df_all['common_search_and_title']/df_all['len_of_search_term']
+    df_all['ratio_title'] = df_all['common_search_and_title']/df_all['len_search_term']
     # Ratio of common_search_and_description over number of words in search_term
-    df_all['ratio_description'] = df_all['common_search_and_description']/df_all['len_of_search_term']
+    df_all['ratio_description'] = df_all['common_search_and_description']/df_all['len_search_term']
     # Combine search_term and brand as attr
     df_all['attr'] = df_all['search_term']+"\t"+df_all['brand']
     # Count the number of common words between search_term and brand
     df_all['common_search_and_brand'] = df_all['attr'].map(lambda x:Helper_Tools.count_common_word(x.split('\t')[0],x.split('\t')[1]))
     # Ratio of common_search_and_brand over number of words in brand
-    df_all['ratio_brand'] = df_all['common_search_and_brand']/df_all['len_of_brand']
+    df_all['ratio_brand'] = df_all['common_search_and_brand']/df_all['len_brand']
     
     '''
     For each of the fields product_title','product_description','brand','bullet',
