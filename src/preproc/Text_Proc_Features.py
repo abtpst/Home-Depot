@@ -47,13 +47,8 @@ def flag_count_and_ratio_func(input_df, col_name, col_list):
 Return the word at pos in col only if pos <= length of col_name and pos <= length of col
 '''
 def get_word_at_pos(row,col_name,col,pos):
-    
     if pos >= len(row['tokens_'+col_name]) or pos >= row['len_'+col]:
         return 0
-    print (pos,col)
-    print (row['tokens_'+col_name])
-    print (row[col])
-    print ('Returning ',int(row['tokens_'+col_name][pos] in row[col]))
     return int(row['tokens_'+col_name][pos] in row[col])
 
 '''
