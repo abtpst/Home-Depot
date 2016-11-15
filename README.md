@@ -89,10 +89,80 @@ The `attributes.csv` is very interesting. Essentially, it has a lot of informati
 
 **Key Idea**
 
+So, given the above data, we have to design features to feed our regressors. Here are a few things we can look at
+
+1. What are the common terms between `search_term`, `product_title`, and `product_description`? 
+2. Should we stem the text? Should we have a spell check?
+3. What are some of the ways to measure similarity and distance between two pieces of text?
+4. Lastly, it turns out that `attributes.csv` can be quite useful. Recall that we had 3 columns
+
+	"product_uid", "name",      "value"
+	
+From this point on, when i say `attribute` of a product, i will be referring to the value in the `name` column for that product. The value in the `value` column, is the value of that `attribute`. For instance, look at the following row
+
+	"product_uid", "name",         "value"
+	 100001         MFG Brand Name  Simpson Strong-Tie
+   
+this shows that for product having the product_uid as 100001, the MFG Brand Name is Simpson Strong Tie
+
+So, lets take a look and see the top 30 `attributes` by count
+
+	df_attr = pd.read_csv('/path/to/attributes.csv', encoding='ISO-8859-1')
+	df_attr['name'].value_counts()[:30]
+	
+gives us 
+
+	Bullet02                       86248
+	Bullet03                       86226
+	MFG Brand Name                 86220
+	Bullet04                       86174
+	Bullet01                       85940
+	Product Width (in.)            61137
+	Bullet05                       60528
+	Product Height (in.)           54698
+	Product Depth (in.)            53652
+	Product Weight (lb.)           45175
+	Bullet06                       44901
+	Color Family                   41508
+	Bullet07                       34349
+	Material                       31499
+	Color/Finish                   28540
+	Bullet08                       26645
+	Certifications and Listings    24583
+	Bullet09                       20567
+	Assembled Height (in.)         18299
+	Assembled Width (in.)          18263
+	Assembled Depth (in.)          18198
+	Product Length (in.)           16705
+	Bullet10                       14763
+	Indoor/Outdoor                 12939
+	Bullet11                       11784
+	Commercial / Residential        9530
+	Bullet12                        8795
+	ENERGY STAR Certified           8420
+	Hardware Included               7462
+	Package Quantity                6904
+
+So looks like the above attributes are quite common. We will be using some of them to create our features.
+
 ### Flow
 
-The common steps for prediction are 
+We start in the **hub** package where `Primary.py` is our driver module. First, we will generate the features. Note that we create all of these features per product. I have divided this into 4 steps
 
+1. `Attribute_Features.generate_attribute_features()`
+
+These are mostly derived from the `attributes.csv`. 
+
+- Create `brand name` as a feature. Look for `MFG Brand Name` as an attribute
+- Create `bullet` as a feature by combining all of the `Bullet` attributes
+- Create `bullet_count` as a feature by counting the number of bullets a product has, if any
+- Identify `color` as a feature by looking at any attribute values that have `color` as a substring
+- Identify `material` as a feature by looking at any attribute values that have `material` as a substring
+- Whether the product is available for commercial or residential use can be a feature. We create this by looking at all attribute values  that have `commercial / residential` as a substring
+- Whether the product is available for indoor or outdoor use can be a feature. We create this by looking at all attribute values that have `indoor / outdoor` as a substring
+- Whether the product is Energy Star Certified can be another feature. Create it by checking if any attribute for a product has `energy star certified` as a substring and whether the value of this attribute if `Yes`
+    
+Please follow the well documented code to see how this is implemented
 
 and specifically
 
