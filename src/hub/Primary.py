@@ -24,5 +24,4 @@ if __name__ == '__main__':
     Gradient_Boosting_Regressor.fit_predict_gbr()
     # Predict using ExtraTreesRegressor
     Extra_Trees_Regressor.fit_predict_gbr()
-    # Predict using an ensemble of the above three regressors
-    Ensemble_Regressor.fit_predict_ensemble()
+    
