@@ -163,7 +163,6 @@ These are mostly derived from the `attributes.csv`.
     - Whether the product is Energy Star Certified can be another feature. Create it by checking if any attribute for a product has `energy star certified` as a substring and whether the value of this attribute if `Yes`
     
 Please follow the well documented code to see how this is implemented
-
 2. `Text_Proc_Features.generate_text_proc_features()`
 
 Here's how the next set of features are generated 
