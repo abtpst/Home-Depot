@@ -344,7 +344,7 @@ So we added 86 new columns to `combined_data_frame` as
 - bullet_tfidf_tsvd_8
 - bullet_tfidf_tsvd_9
 
- 4 `Similarity_Features.generate_similarity_features()`
+4 `Similarity_Features.generate_similarity_features()`
 
 Finally, we will calculate **edit distance** and **jaccard similarity** between `search_term` and certain other fields and add those as features
 
@@ -391,3 +391,10 @@ and so we end up with **163** features.
 Please follow the well documented code.  
 
 ### Results 
+
+The top ranked score for this competition is **0.43192**
+
+1. `Random_Forest_Regressor` using `{"max_features": 100, "n_estimators": 500}` gets me a score of **0.47138**
+2. `Gradient_Boosting_Regressor` using `{"max_features": 100, "n_estimators": 500, "subsample": 0.8}` gets me a score of **0.46829**
+3. `Extra_Trees_Regressor` using `{"verbose": 100, "max_features": 100, "n_estimators": 500}` gets me a score of **0.47586** 
+4. `AdaBoostRegressor` does not give much improvement over the above scores. Need to investigate how to better use this.
