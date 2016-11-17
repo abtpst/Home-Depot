@@ -147,7 +147,9 @@ So looks like the above attributes are quite common. We will be using some of th
 
 ### Flow
 
-We start in the **hub** package where `Primary.py` is our driver module. First, we will generate the features. Note that we create all of these features per product. I have divided this into 4 steps
+We start in the **hub** package where `Primary.py` is our driver module. First, we will generate the features. Note that we create all of these features per product. I have divided this into 4 steps. Before performing any of these steps, the combined data frame looks like this
+
+
 
 1. `Attribute_Features.generate_attribute_features()`
 
@@ -168,8 +170,8 @@ Please follow the well documented code to see how this is implemented.
 
 Here's how the next set of features are generated 
 
-    - Stemming each of the fields that have text
     - Creating `len_` features denoting the length of each field that has text
+    - Stemming each of the fields that have text
     - Spell check for `search_terms`. There are a lot of typos in the search terms. Here, i have used Google's *did you mean* suggestions to correct the spellings. This gives dramatic improvements in results
     - Count how many times the `search_term` appears in `product_title` and `product_description`. Each of these would be a feature.
     - Determine if the last word of the `search_term` appears in `product_title`. Each of these would be a feature.
@@ -178,6 +180,19 @@ Here's how the next set of features are generated
     - Ratio of the above counts over total words in `search_term` will also be features
     - Brand names would need to be encoded into numeric values
     - We will have some boolean features indicating whether a product has `color` and `material` as attributes
+
+3. `Distance_Metric_Features.generate_distance_metric_features()`
+
+In this step, we will calculate cosine similarity using `CountVectorizer` and `TfidfVectorizer`. Also, we will use Truncated Singular Value Decomposition for dimensionality reduction
+
+	- Using `CountVectorizer`, learn a vocabulary dictionary of all tokens in `search_term`, `product_title`, `product_description` and `bullet`
+	- Using `TfidfVectorizer`, learn vocabulary and idf of the words in `search_term`, `product_title`, `product_description` and `bullet`
+	- For `product_title`,`product_description` and `bullet`, add cosine similarity between **count** vectors of `search_term` and these columns as new features
+	- For `product_title`,`product_description` and `bullet`, add cosine similarity between **tfidf** vectors of `search_term` and these columns as new features
+	- For `product_title`,`product_description` and `bullet`, perform truncated singular value decomposition for dimensionality reduction. Each truncated svd will be a feature
+    
+4. `Similarity_Features.generate_similarity_features()`
+
 
 and specifically
 
