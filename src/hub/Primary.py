@@ -7,7 +7,7 @@ Driver module
 '''
 
 from preproc import Attribute_Features, Text_Proc_Features, Distance_Metric_Features, Similarity_Features
-from predict import Random_Forest_Regressor,Extra_Trees_Regressor,Gradient_Boosting_Regressor,Ensemble_Regressor
+from predict import Random_Forest_Regressor,Extra_Trees_Regressor,Gradient_Boosting_Regressor
 
 if __name__ == '__main__':
     # Create features from product attributes
