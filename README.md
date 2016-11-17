@@ -153,14 +153,14 @@ We start in the **hub** package where `Primary.py` is our driver module. First, 
 
 These are mostly derived from the `attributes.csv`. 
 
-- Create `brand name` as a feature. Look for `MFG Brand Name` as an attribute
-- Create `bullet` as a feature by combining all of the `Bullet` attributes
-- Create `bullet_count` as a feature by counting the number of bullets a product has, if any
-- Identify `color` as a feature by looking at any attribute values that have `color` as a substring
-- Identify `material` as a feature by looking at any attribute values that have `material` as a substring
-- Whether the product is available for commercial or residential use can be a feature. We create this by looking at all attribute values  that have `commercial / residential` as a substring
-- Whether the product is available for indoor or outdoor use can be a feature. We create this by looking at all attribute values that have `indoor / outdoor` as a substring
-- Whether the product is Energy Star Certified can be another feature. Create it by checking if any attribute for a product has `energy star certified` as a substring and whether the value of this attribute if `Yes`
+    - Create `brand name` as a feature. Look for `MFG Brand Name` as an attribute
+    - Create `bullet` as a feature by combining all of the `Bullet` attributes
+    - Create `bullet_count` as a feature by counting the number of bullets a product has, if any
+    - Identify `color` as a feature by looking at any attribute values that have `color` as a substring
+    - Identify `material` as a feature by looking at any attribute values that have `material` as a substring
+    - Whether the product is available for commercial or residential use can be a feature. We create this by looking at all attribute values  that have `commercial / residential` as a substring
+    - Whether the product is available for indoor or outdoor use can be a feature. We create this by looking at all attribute values that have `indoor / outdoor` as a substring
+    - Whether the product is Energy Star Certified can be another feature. Create it by checking if any attribute for a product has `energy star certified` as a substring and whether the value of this attribute if `Yes`
     
 Please follow the well documented code to see how this is implemented
 
@@ -168,16 +168,16 @@ Please follow the well documented code to see how this is implemented
 
 Here's how the next set of features are generated 
 
-- Stemming each of the fields that have text
-- Creating `len_` features denoting the length of each field that has text
-- Spell check for `search_terms`. There are a lot of typos in the search terms. Here, i have used Google's *did you mean* suggestions to correct the spellings. This gives dramatic improvements in results
-- Count how many times the `search_term` appears in `product_title` and `product_description`. Each of these would be a feature.
-- Determine if the last word of the `search_term` appears in `product_title`. Each of these would be a feature.
-- Determine if the first word of the `search_term` appears in `product_title`. Each of these would be a feature.
-- Count the number of words in `search_title` that are common with `product_title`, `product_description` and `brand`
-- Ratio of the above counts over total words in `search_term` will also be features
-- Brand names would need to be encoded into numeric values
-- We will have some boolean features indicating whether a product has `color` and `material` as attributes
+    - Stemming each of the fields that have text
+    - Creating `len_` features denoting the length of each field that has text
+    - Spell check for `search_terms`. There are a lot of typos in the search terms. Here, i have used Google's *did you mean* suggestions to correct the spellings. This gives dramatic improvements in results
+    - Count how many times the `search_term` appears in `product_title` and `product_description`. Each of these would be a feature.
+    - Determine if the last word of the `search_term` appears in `product_title`. Each of these would be a feature.
+    - Determine if the first word of the `search_term` appears in `product_title`. Each of these would be a feature.
+    - Count the number of words in `search_title` that are common with `product_title`, `product_description` and `brand`
+    - Ratio of the above counts over total words in `search_term` will also be features
+    - Brand names would need to be encoded into numeric values
+    - We will have some boolean features indicating whether a product has `color` and `material` as attributes
 
 and specifically
 
