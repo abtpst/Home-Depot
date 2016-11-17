@@ -51,7 +51,7 @@ def generate_similarity_features():
         df_all['edit_dist_search_term_'+col+'_avg'] = df_all['edit_dist_search_term_'+col+'_raw'].map(lambda x: x[1]) / df_all['len_search_term']
         df_all.drop(['edit_dist_search_term_'+col+'_raw'], axis=1, inplace=True)
         print ('Edit distanced ',col)
-    # We will drop the following columns as they have text values and are not suitable for classification
+    # We will drop the following columns as they have text values and are not suitable for regression
     cols_to_drop = [
     'attr',
     'search_term',

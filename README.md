@@ -363,7 +363,7 @@ So we added 8 new columns to `combined_data_frame` as
 - edit_dist_search_term_product_description_min
 - edit_dist_search_term_product_description_avg
 
-Now all of the features have been created and out `combined_data_frame` is almost ready for training our regressors. As a last step we will drop the following 10 columns as they have text values and are not suitable for classification
+Now all of the features have been created and out `combined_data_frame` is almost ready for training our regressors. As a last step we will drop the following 10 columns as they have text values and are not suitable for regression
 
 - attr
 - search_term
