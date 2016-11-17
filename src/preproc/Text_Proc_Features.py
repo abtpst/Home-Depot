@@ -163,4 +163,4 @@ def generate_text_proc_features():
         attr_encoder[pid] = 1
     df_all['flag_has_attr'] = df_all['product_uid'].map(lambda x: attr_encoder.get(x, 0)).astype(np.float)
     # Save text proc features. Note that these have been added on top of the attribute features
-    df_all.to_csv('../../resources/data/dframes/text_proc_features_df.csv')
+    df_all.to_csv('../../resources/data/dframes/text_proc_features_df.csv', index=False)

@@ -22,7 +22,7 @@ def fit_predict_gbr():
     start_time = time.time()
     # Load the features/attributes
     X_train,y_train,X_test,id_test = Helper_Tools.generate_train_test_splits('../../resources/data/dframes/final.csv')
-    
+    '''
     print('--- Features Set: %s minutes ---' % round(((time.time() - start_time) / 60), 2))
     print('Number of Features: ', len(X_train.columns.tolist()))
     # Initialize ExtraTreesRegressor
@@ -45,6 +45,10 @@ def fit_predict_gbr():
     print(model.best_score_)
     # Predict using the optimal model
     y_pred = model.predict(X_test)
+    '''
+    etr = ExtraTreesRegressor(n_jobs=1, random_state=2016, max_features=100, n_estimators=500,verbose=100)
+    etr.fit(X_train, y_train)
+    y_pred=etr.predict(X_test)
     for i in range(len(y_pred)):
         if y_pred[i] < 1.0:
             y_pred[i] = 1.0
@@ -53,4 +57,4 @@ def fit_predict_gbr():
     
     # Save the submission
     pd.DataFrame({'id': id_test, 'relevance': y_pred}).to_csv('../../resources/results/'+type(etr).__name__+'submission.csv', index=False)
-    print('--- Submission Generated: %s minutes ---' % round(((time.time() - start_time) / 60), 2))        
+    print('--- Submission Generated: %s minutes ---' % round(((time.time() - start_time) / 60), 2))      

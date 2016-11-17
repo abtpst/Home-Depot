@@ -52,10 +52,10 @@ def generate_attribute_features():
     # Create df_comres from attributes by collecting all rows that have 'commercial / residential' as a substring in any attribute
     print ('Collecting Commercial/Residential')
     df_comres = slicer.generate_dual_sub_attr_df(df_attr, 'commercial / residential', ['product_uid', 'flag_commercial','flag_residential'], ['Commercial','Residential'])
-    # Create df_comres from attributes by collecting all rows that have 'indoor/outdoor' as a substring in any attribute
+    # Create df_inoutdoor from attributes by collecting all rows that have 'indoor/outdoor' as a substring in any attribute
     print ('Collecting Indoor/Outdoor')
     df_inoutdoor = slicer.generate_dual_sub_attr_df(df_attr, 'indoor/outdoor', ['product_uid', 'flag_indoor','flag_outdoor'], ['Indoor','Outdoor'])
-    # Create df_comres from attributes by collecting all rows that have 'energy star certified' as a substring in any attribute and the value of that attribute is 'Yes'
+    # Create df_estar from attributes by collecting all rows that have 'energy star certified' as a substring in any attribute and the value of that attribute is 'Yes'
     print ('Collecting Energy Star Certified')
     df_estar = slicer.generate_custom_sub_attr_df(df_attr, 'energy star certified', ['product_uid', 'flag_estar'], 'Yes')
     # Combine all dataframes
@@ -86,4 +86,4 @@ def generate_attribute_features():
                                ('flag_commercial',-1),('flag_residential',-1),('flag_indoor',-1),('flag_outdoor',-1),
                                ('flag_estar',-1)])
     # Save the progress thus far
-    df_all.to_csv('../../resources/data/dframes/attribute_features_df.csv')
+    pd.DataFrame.to_csv(df_all, '../../resources/data/dframes/attribute_features_df.csv', index=False)

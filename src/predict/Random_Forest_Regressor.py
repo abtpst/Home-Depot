@@ -25,7 +25,7 @@ def fit_predict_rfr():
 
     print('--- Features Set: %s minutes ---' % round(((time.time() - start_time) / 60), 2))
     print('Number of Features: ', len(X_train.columns.tolist()))
-    
+    '''
     # Initialize RandomForestRegressor
     rfr = RandomForestRegressor(n_jobs=1, random_state=2016, verbose=1)
     # Set up possible values for hyper-parameters. These would be used by GridSearch to derive optimal set of hyper-parameters
@@ -47,7 +47,10 @@ def fit_predict_rfr():
     print ('Predicting')
     # Predict using the optimal model
     y_pred = model.predict(X_test)
-    
+    '''
+    rfr = RandomForestRegressor(n_jobs=1, random_state=2016, max_features=100, n_estimators=500,verbose=100)
+    rfr.fit(X_train, y_train)
+    y_pred=rfr.predict(X_test)
     for i in range(len(y_pred)):
         if y_pred[i] < 1.0:
             y_pred[i] = 1.0

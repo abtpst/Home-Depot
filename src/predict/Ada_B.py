@@ -11,7 +11,6 @@ import json
 import Helper_Tools
 import time
 import pandas as pd
-import matplotlib.pyplot as plt
 from sklearn.ensemble import AdaBoostRegressor,RandomForestRegressor,ExtraTreesRegressor,GradientBoostingRegressor
 
 def gen_ada(base_regressor,X_train,y_train,X_test):
@@ -20,29 +19,11 @@ def gen_ada(base_regressor,X_train,y_train,X_test):
     ada_rgr = AdaBoostRegressor(base_regressor,
                           n_estimators=300, random_state=rng)
     
-    print('Fitting base regressor ',type(base_regressor).__name__)
-    #base_regressor.fit(X_train, y_train)
     print('Fitting ada regressor')
     ada_rgr.fit(X_train, y_train)
-    
-    # Predict
-    print('Predicting base regressor ',type(base_regressor).__name__)
-    #y_pred_base = base_regressor.predict(X_test)
     print('Predicting ada regressor')
     y_pred_ada = ada_rgr.predict(X_test)
-    '''
-    print('Plotting results')
-    # Plot the results
-    plt.figure()
-    plt.scatter(X_train, y_train, c="k", label="training samples")
-    plt.plot(X_test, y_pred_base, c="g", label="n_estimators=1", linewidth=2)
-    plt.plot(X_test, y_pred_ada, c="r", label="n_estimators=300", linewidth=2)
-    plt.xlabel("data")
-    plt.ylabel("target")
-    plt.title("Boosted Regression")
-    plt.legend()
-    plt.show()
-    '''
+    
     print('Returning ada predictions')
     return y_pred_ada
     
@@ -62,8 +43,9 @@ if __name__=='__main__':
     
     # Load the features/attributes
     X_train,y_train,X_test,id_test = Helper_Tools.generate_train_test_splits('../../resources/data/dframes/final.csv')
-    
+
     print('Number of Features: ', len(X_train.columns.tolist()))
+    
     rgr_list=[gbr,rfr,etr]
     
     for base_regressor in rgr_list:
@@ -76,4 +58,3 @@ if __name__=='__main__':
                 y_pred[i] = 3.0
         pd.DataFrame({'id': id_test, 'relevance': y_pred}).to_csv('../../resources/results/ada_'+type(base_regressor).__name__+'_submission.csv', index=False)
         print('Ada Boosted '+type(base_regressor).__name__+' Submission Generated: %s minutes ---' % round(((time.time() - start_time) / 60), 2))
-    print('Ad(a)ios!')        

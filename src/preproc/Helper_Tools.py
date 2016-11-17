@@ -177,7 +177,9 @@ def generate_train_test_splits(path_to_df):
     # Prediction values from training data
     y_train = df_train['relevance'].values
     # The following columns are not needed as we have generated all of the features
-    cols_to_drop = ['id', 'product_uid', 'relevance', 'search_term', 'product_title', 'product_description', 'brand', 'attr', 'product_info']
+    cols_to_drop = ['id', 'product_uid', 'relevance', 'search_term', 'product_title', 'product_description', 
+                    'brand', 'attr', 'product_info',
+                    'Unnamed: 0',  'Unnamed: 0.1',  'Unnamed: 0.1.1',  'Unnamed: 0.1.1']
     for col in cols_to_drop:
         try:
             df_train.drop(col, axis=1, inplace=True)

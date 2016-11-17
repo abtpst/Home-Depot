@@ -68,4 +68,4 @@ def generate_distance_metric_features():
         fill_tsvd(df_all,col,tiv,'tfidf',tsvd)
         print('tsvd tfidf for ',col)
     # Save distance metric features. Note that these have been added on top of the text proc features
-    df_all.to_csv('../../resources/data/dframes/distance_metric_features_df.csv')
+    df_all.to_csv('../../resources/data/dframes/distance_metric_features_df.csv', index=False)

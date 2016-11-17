@@ -10,7 +10,6 @@ from preproc import Attribute_Features, Text_Proc_Features, Distance_Metric_Feat
 from predict import Random_Forest_Regressor,Extra_Trees_Regressor,Gradient_Boosting_Regressor,Ensemble_Regressor
 
 if __name__ == '__main__':
-    
     # Create features from product attributes
     Attribute_Features.generate_attribute_features()
     # Create additional features from attribute features using some text processing 

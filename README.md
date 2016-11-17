@@ -70,8 +70,8 @@ Lets take a look at the data we are dealing with
 
 If we look at the `train.csv`, a row looks like
 
-	"id","product_uid","product_title",                     "search_term",  "relevance"
-	 2,   100001,      "Simpson Strong-Tie 12-Gauge Angle", "angle bracket", 3
+	"product_uid",    "product_title",                     "search_term",  "relevance"
+     100001,          "Simpson Strong-Tie 12-Gauge Angle", "angle bracket", 3
 	 
 If we look at the `product_descriptions.csv`, a row looks like
 
@@ -163,6 +163,13 @@ These are mostly derived from the `attributes.csv`.
 - Whether the product is Energy Star Certified can be another feature. Create it by checking if any attribute for a product has `energy star certified` as a substring and whether the value of this attribute if `Yes`
     
 Please follow the well documented code to see how this is implemented
+
+2. `Text_Proc_Features.generate_text_proc_features()`
+
+Here we are going perform the following steps 
+
+- Stemming
+- Spell check for `search_terms`
 
 and specifically
 
